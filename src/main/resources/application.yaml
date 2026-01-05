@@ -11,3 +11,11 @@ spring:
             - Path=/service1/**
           filters:
             - StripPrefix=1               # Bỏ chữ /service1 khi gửi đến service đích
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/homelabdb
+    username: admin
+    password: Cg123!
+
+  sql:
+    init:
+      mode: always

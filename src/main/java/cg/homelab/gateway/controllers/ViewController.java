@@ -19,9 +19,4 @@ public class ViewController {
     public String dashboardPage() {
         return "dashboard";
     }
-    @PostMapping("/signup")
-    public String signup(@RequestParam String username, @RequestParam String password) {
-
-        return "redirect:/login";
-    }
 }
