@@ -1,0 +1,13 @@
+server:
+  port: 8080
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: service_1_route
+          uri: http://localhost:8081      # Khi chạy ở local máy bạn
+          # uri: http://service1:8081    # Khi deploy lên Docker (sẽ đổi sau)
+          predicates:
+            - Path=/service1/**
+          filters:
+            - StripPrefix=1               # Bỏ chữ /service1 khi gửi đến service đích

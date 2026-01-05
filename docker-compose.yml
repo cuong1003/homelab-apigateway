@@ -1,0 +1,16 @@
+services:
+  postgres-db:
+    image: postgres:15-alpine           # Bản alpine siêu nhẹ (~30MB download)
+    container_name: postgres_homelab
+    restart: always
+    environment:
+      POSTGRES_USER: admin              # Tên đăng nhập
+      POSTGRES_PASSWORD: Cg123!   # Mật khẩu của bạn
+      POSTGRES_DB: homelabdb           # Tên database cho project gateway
+    ports:
+      - "5432:5432"                     # Mở port để bạn kết nối từ máy cá nhân
+    volumes:
+      - pgdata:/var/lib/postgresql/data # Lưu dữ liệu vào volume để không bị mất khi xóa container
+
+volumes:
+  pgdata:                               # Khai báo volume
