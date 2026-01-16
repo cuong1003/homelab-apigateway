@@ -19,7 +19,7 @@ public class GatewayConfig {
                         .filters(f -> f
                                 .stripPrefix(1)
                                 .addRequestHeader("X-Forwarded-Prefix", "/auth"))
-                        .uri("http://192.168.1.109:6969"))
+                        .uri("http://auth-service:6969"))
 
                 // Jellyseerr - Tất cả users
                 .route("jellyseerr", r -> r

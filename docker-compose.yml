@@ -9,19 +9,34 @@ services:
     ports:
       - "8080:8080"
     environment:
-      # Redis connection
-      - SPRING_DATA_REDIS_HOST=192.168.1.109
+      # Redis connection - dùng tên container
+      - SPRING_DATA_REDIS_HOST=redis
       - SPRING_DATA_REDIS_PORT=6379
       - SPRING_DATA_REDIS_PASSWORD=${REDIS_PASSWORD:-123123}
       # JWT Secret
       - JWT_SECRET=${JWT_SECRET:-b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZWQyNTUxOQAAACD/95aZ5eSSQZ+r9ffcdOwR3rW0Tyl0q4bgBXmpTI29JAAAAKDVkaK91ZGivQAAAAtzc2gtZWQyNTUxOQAAACD/95aZ5eSSQZ+r9ffcdOwR3rW0Tyl0q4bgBXmpTI29JAAAAEDglyZWnG1O9wXKqPfJaZDipAti8D1bZ2WPkboXB/caRf/3lpnl5JJBn6v199x07BHetbRPKXSrhuAFealMjb0kAAAAFnlvdXJfZW1haWxAZXhhbXBsZS5jb20BAgMEBQYH}
-    extra_hosts:
-      # Cho phép container truy cập localhost của host (auth-service)
-      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+    networks:
+      - homelab-network
+    depends_on:
+      - redis
+
+  # Redis - nếu chưa có từ auth-service
+  redis:
+    image: redis:alpine
+    container_name: redis
+    command: redis-server --requirepass "123123"
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
     restart: unless-stopped
     networks:
       - homelab-network
 
+volumes:
+  redis_data:
+
 networks:
   homelab-network:
-    driver: bridge
+    external: true  # Dùng network đã có từ auth-service
