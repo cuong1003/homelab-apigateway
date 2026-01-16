@@ -1,0 +1,30 @@
+# Build outputs
+target/
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+
+# Git
+.git/
+.gitignore
+
+# GitHub Actions
+.github/
+
+# Logs
+*.log
+logs/
+
+# Test files
+src/test/
+
+# Documentation
+*.md
+docs/
+
+# Docker files
+Dockerfile
+docker-compose.yml
+.dockerignore

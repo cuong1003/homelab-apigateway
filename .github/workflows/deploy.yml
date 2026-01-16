@@ -1,0 +1,37 @@
+name: CI/CD API Gateway
+
+on:
+  push:
+    branches: [ "main" ]
+
+  # Cho phép trigger thủ công
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Stop old container (if running)
+        run: docker compose down || true
+        continue-on-error: true
+
+      - name: Build and Start container
+        env:
+          REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        run: docker compose up -d --build
+
+      - name: Clean up old images
+        run: docker image prune -f
+        continue-on-error: true
+
+      - name: Health check
+        run: |
+          echo "Waiting for service to start..."
+          sleep 30
+          curl -f http://localhost:8080/actuator/health || echo "Health check warning: service may still be starting"
+        continue-on-error: true
